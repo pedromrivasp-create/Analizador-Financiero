@@ -20,8 +20,10 @@ async function callClaude(body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`API error ${res.status}`);
-  return res.json();
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error || "HTTP " + res.status);
+  if (data?.type === "error") throw new Error(JSON.stringify(data.error));
+  return data;
 }
 
 function last12Months() {
