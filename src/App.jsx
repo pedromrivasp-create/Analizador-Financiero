@@ -1,4 +1,5 @@
 // v2
+import AlertsPanel from "./AlertsPanel.jsx";
 import { useState, useRef } from "react";
 import {
   ResponsiveContainer, ComposedChart, Line, ReferenceLine,
@@ -146,6 +147,7 @@ export default function App() {
   const [livePrice,   setLivePrice]   = useState(null);
   const [error,       setError]       = useState(null);
   const [open,        setOpen]        = useState(null);
+  const [showAlerts, setShowAlerts] = useState(false);
   const inputRef = useRef(null);
   const months = last12Months();
 
@@ -325,7 +327,18 @@ export default function App() {
         <div className="sk" style={{height:290,marginTop:4}}/>
       </>}
 
-      {data && <>
+      {data && <><button
+  onClick={() => setShowAlerts(!showAlerts)}
+  style={{
+    width:"100%", padding:"12px", borderRadius:"10px",
+    background:"rgba(124,107,255,0.15)", border:"1px solid rgba(124,107,255,0.3)",
+    color:"#7c6bff", fontFamily:"var(--fs)", fontSize:"14px", fontWeight:"700",
+    cursor:"pointer", marginBottom:"12px", transition:"all .15s"
+  }}
+>
+  🔔 {showAlerts ? "Ocultar alertas" : "Configurar alertas de precio"}
+</button>
+{showAlerts && <AlertsPanel analysisData={data} ticker={ticker} />}
         <div className="vb" style={{
           background:`linear-gradient(135deg,${vcolor[data.veredicto]||"#7c6bff"}18,${vcolor[data.veredicto]||"#7c6bff"}04)`,
           border:`1px solid ${vcolor[data.veredicto]||"#7c6bff"}44`,
