@@ -17,7 +17,7 @@ const AGENT_META = [
 
 // ── Llamada al proxy seguro (API key en el servidor, nunca expuesta al browser) ──
 async function callClaude(body) {
-  const res = await fetch("/.netlify/functions/anthropic", {
+  const res = await fetch("/api/anthropic", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
