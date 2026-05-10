@@ -1,4 +1,5 @@
 // v3
+import TrendingTopics from "./TrendingTopics.jsx";
 import AlertsPanel from "./AlertsPanel.jsx";
 import { useState, useRef } from "react";
 import {
@@ -265,6 +266,7 @@ export default function App() {
         <p className="sub">4 agentes · precio en tiempo real · gráfica hasta {months[11]}</p>
       </div>
 
+      <TrendingTopics onSelectTicker={(t) => { setTicker(t); }} />
       <div className="card">
         <div className="tw">
           <span className="tl">Activo / Ticker</span>
