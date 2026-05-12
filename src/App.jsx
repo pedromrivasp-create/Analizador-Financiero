@@ -1,5 +1,6 @@
 // v3
 import BigInvestors from "./BigInvestors.jsx";
+const [showBigInvestors, setShowBigInvestors] = useState(false);
 import TrendingTopics from "./TrendingTopics.jsx";
 import AlertsPanel from "./AlertsPanel.jsx";
 import { useState, useRef } from "react";
@@ -423,7 +424,18 @@ export default function App() {
           ))}
         </div>
       )}
-      <BigInvestors onSelectTicker={(t) => setTicker(t)} />
+      {showBigInvestors && <BigInvestors onSelectTicker={(t) => setTicker(t)} />}
+<button
+  onClick={() => setShowBigInvestors(!showBigInvestors)}
+  style={{
+    width:"100%", padding:"12px", borderRadius:"10px",
+    background:"rgba(124,107,255,0.15)", border:"1px solid rgba(124,107,255,0.3)",
+    color:"#7c6bff", fontFamily:"var(--fs)", fontSize:"14px", fontWeight:"700",
+    cursor:"pointer", marginBottom:"12px", transition:"all .15s"
+  }}
+>
+  🏦 {showBigInvestors ? "Ocultar" : "En qué invierten los grandes"}
+</button>
     </div>
     </>
   );
