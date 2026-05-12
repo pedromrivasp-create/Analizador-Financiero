@@ -1,6 +1,5 @@
 // v3
 import BigInvestors from "./BigInvestors.jsx";
-const [showBigInvestors, setShowBigInvestors] = useState(false);
 import TrendingTopics from "./TrendingTopics.jsx";
 import AlertsPanel from "./AlertsPanel.jsx";
 import { useState, useRef } from "react";
@@ -153,6 +152,7 @@ export default function App() {
   const [showAlerts, setShowAlerts] = useState(false);
   const inputRef = useRef(null);
   const months = last12Months();
+  const [showBigInvestors, setShowBigInvestors] = useState(false);
 
   async function analyze() {
     if (!ticker.trim()) {
