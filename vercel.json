@@ -5,6 +5,7 @@
   ],
   "functions": {
     "api/check-alerts.js": { "maxDuration": 30 },
-    "api/anthropic.js": { "maxDuration": 30 }
+    "api/anthropic.js": { "maxDuration": 30 },
+    "api/big-investors.js": { "maxDuration": 60 }
   }
 }
