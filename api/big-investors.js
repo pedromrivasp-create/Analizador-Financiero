@@ -29,7 +29,7 @@ async function fetchInvestorsFromClaude() {
 
   // FIX 1: Timeout de 9s para no exceder el límite de Vercel Hobby (10s)
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 9000);
+  const timeout = setTimeout(() => controller.abort(), 55000);
 
   let res;
   try {
