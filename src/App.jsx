@@ -1,4 +1,5 @@
 // v3
+import BigInvestors from "./BigInvestors.jsx";
 import TrendingTopics from "./TrendingTopics.jsx";
 import AlertsPanel from "./AlertsPanel.jsx";
 import { useState, useRef } from "react";
@@ -422,6 +423,7 @@ export default function App() {
           ))}
         </div>
       )}
+      <BigInvestors onSelectTicker={(t) => setTicker(t)} />
     </div>
     </>
   );
