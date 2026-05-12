@@ -46,7 +46,7 @@ async function fetchInvestorsFromClaude() {
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
         // FIX 3: Reducimos max_tokens de 2000 a 1200 — genera más rápido
-        max_tokens: 1200,
+        max_tokens: 3000,
         system: `Hoy es ${dateStr}. Eres un analista financiero que explica inversiones de forma simple para no financieros.
 Usa tu conocimiento sobre los portafolios más recientes de Warren Buffett, Ray Dalio, George Soros y Cathie Wood
 basándote en SEC 13F filings, Berkshire Hathaway reports y noticias hasta tu fecha de corte.
