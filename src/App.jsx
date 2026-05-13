@@ -52,7 +52,7 @@ async function fetchRealPrice(ticker) {
   const now = new Date();
   const dateStr = now.toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
   const data = await callClaude({
-    model: "claude-haiku-4-5-20251001",
+    model: "claude-haiku-4-5",
     max_tokens: 300,
     tools: [{ type: "web_search_20250305", name: "web_search" }],
     system: `Eres un asistente financiero. Hoy es ${dateStr}.
