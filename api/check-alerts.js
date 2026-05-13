@@ -35,11 +35,14 @@ async function getPrice(ticker) {
 }
 
 async function sendEmail(to, subject, html) {
-  await fetch("https://api.resend.com/emails", {
+  const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_KEY}` },
     body: JSON.stringify({ from: "Analizador IA <onboarding@resend.dev>", to: [to], subject, html }),
   });
+  const result = await response.json();
+  console.log("[sendEmail] status:", response.status, "result:", JSON.stringify(result));
+  return result;
 }
 
 function emailHtml({ ticker, type, price, level, color }) {
