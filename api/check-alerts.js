@@ -21,7 +21,7 @@ async function getPrice(ticker) {
       "anthropic-beta": "web-search-2025-03-05",
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-haiku-4-5",
       max_tokens: 150,
       tools: [{ type: "web_search_20250305", name: "web_search" }],
       system: `Responde SOLO con JSON: {"price": 123.45}`,
