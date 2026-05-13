@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const API = "/.netlify/functions";
+const API = "/api";
 
 export default function AlertsPanel({ analysisData, ticker }) {
   const [alerts, setAlerts]     = useState([]);
