@@ -77,7 +77,6 @@ Sin texto extra, solo el JSON.`,
 
   return JSON.parse(text);
 }
-
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -85,13 +84,21 @@ export default async function handler(req, res) {
 
   try {
     const CACHE_KEY = "trending:weekly";
+    const forceRefresh = req.query?.refresh === "true"; // 👈 NUEVO
 
-    // Intentar obtener del caché primero
     const cached = await redisGet(CACHE_KEY);
-    if (cached) {
+    if (cached && !forceRefresh) { // 👈 MODIFICADO
       return res.status(200).json({ ...cached, cached: true });
     }
 
+    const trending = await fetchTrendingFromClaude();
+    await redisSet(CACHE_KEY, trending, 604800);
+    return res.status(200).json({ ...trending, cached: false });
+  } catch (err) {
+    console.error("[trending] Error:", err.message);
+    return res.status(500).json({ error: err.message });
+  }
+}
     // Si no hay caché, obtener de Claude
     const trending = await fetchTrendingFromClaude();
 
