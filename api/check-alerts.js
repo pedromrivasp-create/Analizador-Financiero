@@ -38,7 +38,7 @@ async function sendEmail(to, subject, html) {
   await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({ from: "Analizador IA <alertas@resend.dev>", to: [to], subject, html }),
+    body: JSON.stringify({ from: "Analizador IA <onboarding@resend.dev>", to: [to], subject, html }),
   });
 }
 
