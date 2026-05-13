@@ -90,7 +90,7 @@ export default async function handler(req, res) {
       for (const alert of tickerAlerts) {
         let type = "", color = "", level = 0, triggered = false;
 
-        if (alert.stopLoss && price <= alert.stopLoss) {
+        if (alert.stopLoss && price <= alert.stopLoss*1.5) {
           triggered = true; type = "🔴 Stop Loss alcanzado"; color = "#ef4444"; level = alert.stopLoss;
         } else if (alert.objetivo2 && price >= alert.objetivo2) {
           triggered = true; type = "🚀 Objetivo 2 alcanzado"; color = "#f59e0b"; level = alert.objetivo2;
