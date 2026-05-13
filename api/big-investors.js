@@ -44,7 +44,7 @@ async function fetchInvestorsFromClaude() {
         // Claude Haiku tiene conocimiento actualizado suficiente para datos trimestrales de inversores
       },
       body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
+        model: "claude-haiku-4-5",
         // FIX 3: Reducimos max_tokens de 2000 a 1200 — genera más rápido
         max_tokens: 3000,
         system: `Hoy es ${dateStr}. Eres un analista financiero que explica inversiones de forma simple para no financieros.
