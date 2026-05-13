@@ -34,7 +34,7 @@ async function fetchTrendingFromClaude() {
       "anthropic-beta": "web-search-2025-03-05",
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-haiku-4-5",
       max_tokens: 1500,
       tools: [{ type: "web_search_20250305", name: "web_search" }],
       system: `Hoy es ${dateStr}. Eres un analista financiero. 
