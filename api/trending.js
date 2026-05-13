@@ -1,6 +1,5 @@
 // api/trending.js — obtiene trending stocks via Claude web_search
 // Se cachea en Upstash Redis por 7 días
-
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const UPSTASH_URL   = process.env.UPSTASH_REDIS_REST_URL;
 const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -26,7 +25,6 @@ async function redisSet(key, value, ttlSeconds) {
 async function fetchTrendingFromClaude() {
   const now = new Date();
   const dateStr = now.toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
-
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -68,45 +66,30 @@ Sin texto extra, solo el JSON.`,
       }],
     }),
   });
-
   const data = await res.json();
   const text = (data.content || [])
     .map(b => b.type === "text" ? b.text : "")
     .join("").trim()
     .replace(/^```json\s*/, "").replace(/\s*```$/, "").trim();
-
   return JSON.parse(text);
 }
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(200).end();
-
   try {
     const CACHE_KEY = "trending:weekly";
-    const forceRefresh = req.query?.refresh === "true"; // 👈 NUEVO
-
+    const forceRefresh = req.query?.refresh === "true";
     const cached = await redisGet(CACHE_KEY);
-    if (cached && !forceRefresh) { // 👈 MODIFICADO
+    if (cached && !forceRefresh) {
       return res.status(200).json({ ...cached, cached: true });
     }
-
     const trending = await fetchTrendingFromClaude();
     await redisSet(CACHE_KEY, trending, 604800);
     return res.status(200).json({ ...trending, cached: false });
   } catch (err) {
     console.error("[trending] Error:", err.message);
-    return res.status(500).json({ error: err.message });
-  }
-}
-    // Si no hay caché, obtener de Claude
-    const trending = await fetchTrendingFromClaude();
-
-    // Guardar en caché por 7 días (604800 segundos)
-    await redisSet(CACHE_KEY, trending, 604800);
-
-    return res.status(200).json({ ...trending, cached: false });
-  } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 }
