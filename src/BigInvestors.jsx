@@ -196,6 +196,7 @@ export default function BigInvestors({ onSelectTicker, onDataLoaded }) {
       const d = await r.json();
       if (d.error) throw new Error(d.error);
       setData(d);
+      onDataLoaded && onDataLoaded(d); // 👈 agregar aquí
     } catch (e) {
       setError("No se pudo cargar la información. Intenta más tarde.");
     } finally {
