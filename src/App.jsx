@@ -139,6 +139,7 @@ function ChartTooltip({ active, payload, label }) {
 }
 
 export default function App() {
+  const [showAlpaca, setShowAlpaca] = useState(false);
   const [ticker,      setTicker]      = useState("");
   const [horizon,     setHorizon]     = useState("1 año");
   const [profile,     setProfile]     = useState("moderado");
