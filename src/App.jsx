@@ -487,6 +487,11 @@ export default function App() {
     onClose={() => setShowPortfolio(false)}
     trendingData={trendingData}
     bigInvestorsData={bigInvestorsData}
+    {showAlpaca && (
+  <AlpacaPanel
+    onClose={() => setShowAlpaca(false)}
+    trendingData={trendingData}
+    bigInvestorsData={bigInvestorsData}
       />
     )}
     </>
