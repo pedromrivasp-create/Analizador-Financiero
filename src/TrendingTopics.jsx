@@ -31,7 +31,7 @@ function MiniChart({ data, positive }) {
   );
 }
 
-export default function TrendingTopics({ onSelectTicker }) {
+export default function TrendingTopics({ onSelectTicker, onDataLoaded }) {
   const [items,   setItems]   = useState([]);
   const [loading, setLoading] = useState(true);
   const [error,   setError]   = useState(null);
