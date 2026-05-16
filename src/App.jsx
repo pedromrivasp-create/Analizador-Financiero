@@ -1,4 +1,4 @@
-// v3
+// v4 — con Portfolio Virtual IA
 import BigInvestors from "./BigInvestors.jsx";
 import TrendingTopics from "./TrendingTopics.jsx";
 import AlertsPanel from "./AlertsPanel.jsx";
