@@ -483,15 +483,19 @@ export default function App() {
 
     {/* Modal Portfolio */}
     {showPortfolio && (
-  <PortfolioPanel
-    onClose={() => setShowPortfolio(false)}
-    trendingData={trendingData}
-    bigInvestorsData={bigInvestorsData}
+      <PortfolioPanel
+        onClose={() => setShowPortfolio(false)}
+        trendingData={trendingData}
+        bigInvestorsData={bigInvestorsData}
+      />
+    )}
+
+    {/* Modal Alpaca */}
     {showAlpaca && (
-  <AlpacaPanel
-    onClose={() => setShowAlpaca(false)}
-    trendingData={trendingData}
-    bigInvestorsData={bigInvestorsData}
+      <AlpacaPanel
+        onClose={() => setShowAlpaca(false)}
+        trendingData={trendingData}
+        bigInvestorsData={bigInvestorsData}
       />
     )}
     </>
