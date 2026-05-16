@@ -1,4 +1,5 @@
 // v4 — con Portfolio Virtual IA
+import AlpacaPanel from "./AlpacaPanel.jsx";
 import BigInvestors from "./BigInvestors.jsx";
 import TrendingTopics from "./TrendingTopics.jsx";
 import AlertsPanel from "./AlertsPanel.jsx";
