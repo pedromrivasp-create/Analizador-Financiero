@@ -2,6 +2,7 @@
 import BigInvestors from "./BigInvestors.jsx";
 import TrendingTopics from "./TrendingTopics.jsx";
 import AlertsPanel from "./AlertsPanel.jsx";
+import PortfolioPanel from "./PortfolioPanel.jsx";
 import { useState, useRef } from "react";
 import {
   ResponsiveContainer, ComposedChart, Line, ReferenceLine,
@@ -17,7 +18,6 @@ const AGENT_META = [
   { id:"sintesis",    label:"④ Síntesis & Veredicto",  icon:"◆", color:"#4ade80" },
 ];
 
-// ── Llamada al proxy seguro (API key en el servidor, nunca expuesta al browser) ──
 async function callClaude(body) {
   const res = await fetch("/api/anthropic", {
     method: "POST",
@@ -47,7 +47,6 @@ function fmtPrice(n) {
   return num.toLocaleString("en-US",{minimumFractionDigits:4,maximumFractionDigits:6});
 }
 
-// ── Paso 1: obtener precio real con web_search ──
 async function fetchRealPrice(ticker) {
   const now = new Date();
   const dateStr = now.toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
@@ -75,7 +74,6 @@ Sin markdown, sin texto adicional. Solo el JSON.`,
   return null;
 }
 
-// ── Paso 2: análisis multiagente ──
 async function fetchAnalysis(ticker, horizon, profile, priceInfo, months) {
   const now = new Date();
   const dateStr = now.toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
@@ -149,10 +147,13 @@ export default function App() {
   const [livePrice,   setLivePrice]   = useState(null);
   const [error,       setError]       = useState(null);
   const [open,        setOpen]        = useState(null);
-  const [showAlerts, setShowAlerts] = useState(false);
+  const [showAlerts,  setShowAlerts]  = useState(false);
+  const [showBigInvestors, setShowBigInvestors] = useState(false);
+  const [showPortfolio,    setShowPortfolio]    = useState(false);
+  const [trendingData,     setTrendingData]     = useState(null);
+  const [bigInvestorsData, setBigInvestorsData] = useState(null);
   const inputRef = useRef(null);
   const months = last12Months();
-  const [showBigInvestors, setShowBigInvestors] = useState(false);
 
   async function analyze() {
     if (!ticker.trim()) {
@@ -259,16 +260,28 @@ export default function App() {
       .cc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rr);padding:20px;margin-bottom:12px;animation:fi .5s ease}
       .ct{font-family:var(--fn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--di);margin-bottom:16px}
       .er{background:#1e0e0e;border:1px solid #f87171;border-radius:var(--rr);padding:12px 16px;font-family:var(--fn);font-size:12px;color:#f87171;margin-bottom:12px}
+      .pf-trigger{width:100%;padding:16px;border-radius:10px;background:linear-gradient(135deg,rgba(124,107,255,0.2),rgba(124,107,255,0.08));border:1px solid rgba(124,107,255,0.4);color:#7c6bff;font-family:var(--fs);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(124,107,255,0.15);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+      .pf-trigger:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(124,107,255,0.25);border-color:rgba(124,107,255,0.6)}
     `}</style>
 
     <div className="w">
       <div style={{marginBottom:28}}>
-        <div className="eye">Sistema multiagente · v7.0</div>
+        <div className="eye">Sistema multiagente · v8.0</div>
         <h1>Analizador de inversiones <span style={{color:"var(--ac)"}}>·</span> IA</h1>
         <p className="sub">4 agentes · precio en tiempo real · gráfica hasta {months[11]}</p>
       </div>
 
-      <TrendingTopics onSelectTicker={(t) => { setTicker(t); }} />
+      {/* 💼 Botón Portfolio Virtual — destacado arriba */}
+      <button className="pf-trigger" onClick={() => setShowPortfolio(true)}>
+        💼 Invertir virtualmente con IA
+        <span style={{fontFamily:"var(--fn)",fontSize:10,opacity:.7,fontWeight:400}}>→ simula $100, $500…</span>
+      </button>
+
+      <TrendingTopics
+        onSelectTicker={(t) => { setTicker(t); }}
+        onDataLoaded={(d) => setTrendingData(d)}
+      />
+
       <div className="card">
         <div className="tw">
           <span className="tl">Activo / Ticker</span>
@@ -331,18 +344,20 @@ export default function App() {
         <div className="sk" style={{height:290,marginTop:4}}/>
       </>}
 
-      {data && <><button
-  onClick={() => setShowAlerts(!showAlerts)}
-  style={{
-    width:"100%", padding:"12px", borderRadius:"10px",
-    background:"rgba(124,107,255,0.15)", border:"1px solid rgba(124,107,255,0.3)",
-    color:"#7c6bff", fontFamily:"var(--fs)", fontSize:"14px", fontWeight:"700",
-    cursor:"pointer", marginBottom:"12px", transition:"all .15s"
-  }}
->
-  🔔 {showAlerts ? "Ocultar alertas" : "Configurar alertas de precio"}
-</button>
-{showAlerts && <AlertsPanel analysisData={data} ticker={ticker} />}
+      {data && <>
+        <button
+          onClick={() => setShowAlerts(!showAlerts)}
+          style={{
+            width:"100%", padding:"12px", borderRadius:"10px",
+            background:"rgba(124,107,255,0.15)", border:"1px solid rgba(124,107,255,0.3)",
+            color:"#7c6bff", fontFamily:"var(--fs)", fontSize:"14px", fontWeight:"700",
+            cursor:"pointer", marginBottom:"12px", transition:"all .15s"
+          }}
+        >
+          🔔 {showAlerts ? "Ocultar alertas" : "Configurar alertas de precio"}
+        </button>
+        {showAlerts && <AlertsPanel analysisData={data} ticker={ticker} />}
+
         <div className="vb" style={{
           background:`linear-gradient(135deg,${vcolor[data.veredicto]||"#7c6bff"}18,${vcolor[data.veredicto]||"#7c6bff"}04)`,
           border:`1px solid ${vcolor[data.veredicto]||"#7c6bff"}44`,
@@ -424,19 +439,34 @@ export default function App() {
           ))}
         </div>
       )}
-      {showBigInvestors && <BigInvestors onSelectTicker={(t) => setTicker(t)} />}
-<button
-  onClick={() => setShowBigInvestors(!showBigInvestors)}
-  style={{
-    width:"100%", padding:"12px", borderRadius:"10px",
-    background:"rgba(124,107,255,0.15)", border:"1px solid rgba(124,107,255,0.3)",
-    color:"#7c6bff", fontFamily:"var(--fs)", fontSize:"14px", fontWeight:"700",
-    cursor:"pointer", marginBottom:"12px", transition:"all .15s"
-  }}
->
-  🏦 {showBigInvestors ? "Ocultar" : "En qué invierten los grandes"}
-</button>
+
+      {showBigInvestors && (
+        <BigInvestors
+          onSelectTicker={(t) => setTicker(t)}
+          onDataLoaded={(d) => setBigInvestorsData(d)}
+        />
+      )}
+      <button
+        onClick={() => setShowBigInvestors(!showBigInvestors)}
+        style={{
+          width:"100%", padding:"12px", borderRadius:"10px",
+          background:"rgba(124,107,255,0.15)", border:"1px solid rgba(124,107,255,0.3)",
+          color:"#7c6bff", fontFamily:"var(--fs)", fontSize:"14px", fontWeight:"700",
+          cursor:"pointer", marginBottom:"12px", transition:"all .15s"
+        }}
+      >
+        🏦 {showBigInvestors ? "Ocultar" : "En qué invierten los grandes"}
+      </button>
     </div>
+
+    {/* Modal Portfolio */}
+    {showPortfolio && (
+      <PortfolioPanel
+        onClose={() => setShowPortfolio(false)}
+        trendingData={trendingData}
+        bigInvestorsData={bigInvestorsData}
+      />
+    )}
     </>
   );
 }
