@@ -483,10 +483,10 @@ export default function App() {
 
     {/* Modal Portfolio */}
     {showPortfolio && (
-      <PortfolioPanel
-        onClose={() => setShowPortfolio(false)}
-        trendingData={trendingData}
-        bigInvestorsData={bigInvestorsData}
+  <PortfolioPanel
+    onClose={() => setShowPortfolio(false)}
+    trendingData={trendingData}
+    bigInvestorsData={bigInvestorsData}
       />
     )}
     </>
