@@ -273,11 +273,31 @@ export default function App() {
         <p className="sub">4 agentes · precio en tiempo real · gráfica hasta {months[11]}</p>
       </div>
 
-      {/* 💼 Botón Portfolio Virtual — destacado arriba */}
-      <button className="pf-trigger" onClick={() => setShowPortfolio(true)}>
-        💼 Invertir virtualmente con IA
-        <span style={{fontFamily:"var(--fn)",fontSize:10,opacity:.7,fontWeight:400}}>→ simula $100, $500…</span>
-      </button>
+{/* 💼 Botón Portfolio Virtual — destacado arriba */}
+<button
+  className="pf-trigger"
+  onClick={() => setShowPortfolio(true)}
+>
+  💼 Invertir virtualmente con IA
+  <span style={{fontFamily:"var(--fn)",fontSize:10,opacity:.7,fontWeight:400}}>→ simula $100, $500…</span>
+</button>
+
+<button
+  onClick={() => setShowAlpaca(true)}
+  style={{
+    width:"100%", padding:"16px", borderRadius:"10px",
+    background:"linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.08))",
+    border:"1px solid rgba(245,158,11,0.4)", color:"#f59e0b",
+    fontFamily:"var(--fs)", fontSize:"15px", fontWeight:"700",
+    cursor:"pointer", transition:"all .2s",
+    boxShadow:"0 4px 20px rgba(245,158,11,0.15)",
+    display:"flex", alignItems:"center", justifyContent:"center", gap:"10px",
+    marginBottom:"12px"
+  }}
+>
+  🦙 Conectar Alpaca — Trading Real
+  <span style={{fontFamily:"var(--fn)",fontSize:10,opacity:.7,fontWeight:400}}>→ paper & live</span>
+</button>
 
       <TrendingTopics
         onSelectTicker={(t) => { setTicker(t); }}
