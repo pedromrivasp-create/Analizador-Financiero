@@ -49,7 +49,7 @@ export default function TrendingTopics({ onSelectTicker, onDataLoaded }) {
       const d = await r.json();
       if (d.error) throw new Error(d.error);
       setItems(d.items || []);
-      onDataLoaded && onDataLoaded(d);
+      onDataLoaded && onDataLoaded(d); // 👈 agregar aquí
       setGenDate(d.generatedAt);
       setCached(d.cached);
     } catch (e) {
