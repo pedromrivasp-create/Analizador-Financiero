@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     // OPT 3: Si el system ya es array, agregar cache_control al último bloque largo
     if (Array.isArray(body.system)) {
       optimizedBody.system = body.system.map((block, i) => {
-        if (i === body.system.length - 1 && block.type === "text" && block.text?.length > 500) {
+        if (i === body.system.length - 1 && block.type === "text" && block.text?.length > 100) {
           return { ...block, cache_control: { type: "ephemeral" } };
         }
         return block;
