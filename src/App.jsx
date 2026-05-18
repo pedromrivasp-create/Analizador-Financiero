@@ -58,31 +58,7 @@ async function fetchRealPrice(ticker) {
   } catch { return null; }
 }
 
-  const data = await callClaude({
-    model: "claude-haiku-4-5",
-    max_tokens: 150,
-    tools: [{ type: "web_search_20250305", name: "web_search" }],
-    system: `Responde SOLO con JSON: {"price":123.45,"change24h":-1.2,"source":"fuente"}`,
-    messages: [{
-      role: "user",
-      content: `Precio USD actual de ${ticker} hoy ${dateStr}. Solo JSON.`
-    }]
-  });
-  const text = (data.content||[])
-    .map(b => b.type==="text" ? b.text : "")
-    .join("").trim()
-    .replace(/^```json\s*/,"").replace(/\s*```$/,"").trim();
-  try {
-    const parsed = JSON.parse(text);
-    if (parsed.price > 0) {
-      priceCache[ticker] = { data: parsed, ts: Date.now() };
-      return parsed;
-    }
-  } catch {}
-  return null;
-}
-
-// Parte estática del system prompt — supera 1024 tokens para activar prompt caching de Anthropic
+  // Parte estática del system prompt — supera 1024 tokens para activar prompt caching de Anthropic
 // Esta sección NO cambia entre llamadas → se cachea y ahorra ~80% del costo
 const ANALYSIS_SYSTEM_STATIC = `Eres un sistema multiagente de análisis de inversiones de alta precisión compuesto por 4 agentes especializados:
 
