@@ -50,14 +50,13 @@ function fmtPrice(n) {
 // OPT: Caché de precios en memoria — evita búsquedas repetidas del mismo ticker en 5 min
 const priceCache = {};
 async function fetchRealPrice(ticker) {
-  const now = new Date();
-  const dateStr = now.toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
-
-  // Devolver precio cacheado si tiene menos de 5 minutos
-  const cached = priceCache[ticker];
-  if (cached && (Date.now() - cached.ts) < 5 * 60 * 1000) {
-    return cached.data;
-  }
+  try {
+    const r = await fetch(`/api/price?ticker=${ticker}`);
+    const d = await r.json();
+    if (d.error) return null;
+    return d;
+  } catch { return null; }
+}
 
   const data = await callClaude({
     model: "claude-haiku-4-5",
