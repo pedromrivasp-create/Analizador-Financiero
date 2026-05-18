@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     // OPT 2: Inyectar cache_control en el system prompt si es string largo (>1024 tokens)
     let optimizedBody = { ...body };
 
-    if (typeof body.system === "string" && body.system.length > 500) {
+    if (typeof body.system === "string" && body.system.length > 100) {
       // Convertir system string a array con cache_control para activar caché
       optimizedBody.system = [
         {
