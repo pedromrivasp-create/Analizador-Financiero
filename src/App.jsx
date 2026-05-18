@@ -122,7 +122,7 @@ Niveles sugeridos: stopLoss=$${p?(p*0.91).toFixed(2):0}, objetivo1=$${p?(p*1.18)
 
   const raw = await callClaude({
     model: "claude-haiku-4-5",
-    max_tokens: 2000,
+    max_tokens: 3000,
     system: ANALYSIS_SYSTEM_STATIC + systemDynamic,
     messages: [{
       role: "user",
