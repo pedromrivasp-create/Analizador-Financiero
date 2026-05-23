@@ -177,7 +177,7 @@ export default function App() {
       setData(result);
       setOpen("fundamental");
     } catch(e) {
-      setError("Error al procesar. Intenta nuevamente.");
+     setError(e.message.includes("Límite") ? e.message : "Error al procesar. Intenta nuevamente.");
     } finally {
       setLoading(false); setLoadingStep("");
     }
