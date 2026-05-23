@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     if (!allowed) {
       console.log(`[rate-limit] IP ${ip} bloqueada — ${count}/${limit} análisis hoy`);
       return res.status(429).json({
-        error: `Límite diario alcanzado (${limit} análisis/día). Vuelve mañana o suscríbete para acceso ilimitado.`,
+        error: `🚫 Límite diario alcanzado — usaste tus ${limit} análisis gratuitos de hoy. Suscríbete para acceso ilimitado o vuelve mañana.`,
         limit,
         count,
         resetAt: "mañana a medianoche UTC"
