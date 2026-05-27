@@ -1,4 +1,3 @@
-const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const UPSTASH_URL   = process.env.UPSTASH_REDIS_REST_URL;
 const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 const RESEND_KEY    = process.env.RESEND_API_KEY;
