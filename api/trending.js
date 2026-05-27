@@ -37,7 +37,8 @@ async function fetchTrendingFromClaude() {
       model: "claude-haiku-4-5",
       max_tokens: 1500,
       tools: [{ type: "web_search_20250305", name: "web_search" }],
-      system: `Hoy es ${dateStr}. Eres un analista financiero. 
+      system: system: `IMPORTANTE: Responde ÚNICAMENTE con JSON válido. NO escribas texto, explicaciones ni markdown. SOLO el objeto JSON.
+Hoy es ${dateStr}. Eres un analista financiero. 
 Busca las 8 acciones/activos más trending esta semana (combinando: más buscados en Google Trends + mayor volumen de trading en mercados).
 Incluye una mezcla de: acciones de bolsa (NYSE/NASDAQ), cryptos y materias primas si están trending.
 Responde SOLO con JSON válido sin markdown:
