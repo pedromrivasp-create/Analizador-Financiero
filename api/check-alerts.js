@@ -12,26 +12,12 @@ async function redisCmd(...args) {
 }
 
 async function getPrice(ticker) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": ANTHROPIC_KEY,
-      "anthropic-version": "2023-06-01",
-      "anthropic-beta": "web-search-2025-03-05",
-    },
-    body: JSON.stringify({
-      model: "claude-haiku-4-5",
-      max_tokens: 150,
-      tools: [{ type: "web_search_20250305", name: "web_search" }],
-      system: `Responde SOLO con JSON: {"price": 123.45}`,
-      messages: [{ role: "user", content: `Precio actual USD de ${ticker}. Solo JSON.` }],
-    }),
-  });
-  const data = await res.json();
-  const text = (data.content||[]).map(b=>b.type==="text"?b.text:"").join("").trim()
-    .replace(/^```json\s*/,"").replace(/\s*```$/,"").trim();
-  try { const p = JSON.parse(text); return p.price||null; } catch { return null; }
+  try {
+    // Usar /api/price que tiene caché Redis de 5 min — evita web_search en cada llamada
+    const r = await fetch(`https://analizador-financiero-xi.vercel.app/api/price?ticker=${ticker}`);
+    const d = await r.json();
+    return d.price || null;
+  } catch { return null; }
 }
 
 async function sendEmail(to, subject, html) {
